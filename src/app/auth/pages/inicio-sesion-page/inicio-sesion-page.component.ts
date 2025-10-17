@@ -21,11 +21,11 @@ export class InicioSesionPageComponent implements OnInit {
       }
     });
 
-    this.auth.idTokenClaims$.subscribe(c => console.log('ID Token:', c));
+    /* this.auth.idTokenClaims$.subscribe(c => console.log('ID Token:', c));
     this.auth.getAccessTokenSilently().subscribe(token => {
       console.log('Access Token:', token);
       this.accessToken = token;
-    });
+    }); */
 
   }
 
@@ -33,10 +33,10 @@ export class InicioSesionPageComponent implements OnInit {
     this.auth.loginWithRedirect();
   }
 
-  getToken() {
-    this.auth.getAccessTokenSilently().subscribe(token => {
-      this.accessToken = token;
-      console.log('Access Token:', token);
-    });
-  }
+  /*  getToken() {
+     this.auth.getAccessTokenSilently().subscribe(token => {
+       this.accessToken = token;
+       console.log('Access Token:', token);
+     });
+   } */
 }
