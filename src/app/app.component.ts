@@ -1,5 +1,4 @@
-import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import {Component, inject} from '@angular/core';
 import {AuthService} from '@auth0/auth0-angular';
 
 @Component({
@@ -7,16 +6,8 @@ import {AuthService} from '@auth0/auth0-angular';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'practica-laboratorio';
-  constructor(private auth: AuthService, private router: Router) { }
-
-  ngOnInit(): void {
-    this.auth.handleRedirectCallback().subscribe({
-      next: (result) => {
-        const target = result?.appState?.target || '/';
-        this.router.navigate([target]);
-      }
-    });
-  }
+  protected readonly window = window;
+  protected auth = inject(AuthService);
 }

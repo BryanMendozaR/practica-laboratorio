@@ -15,15 +15,13 @@ import {AuthenticacionModule} from './auth/auth.module';
     AppRoutingModule,
     AuthenticacionModule,
     AuthModule.forRoot({
-      domain: 'dev-eky1z83d5zy7xss7.us.auth0.com', // tu dominio Auth0
-      clientId: '5s9jdumlQe65D45ZVH7qMzTdJE9P39LW',            // tu Client ID
+      domain: 'dev-s4afwstsn13suhz7.us.auth0.com',
+      clientId: 'le95LQVUoxiZ2HEHGF8t6XJqrBw0LgDF',
       authorizationParams: {
         redirect_uri: window.location.origin,
-        audience: 'https://localhost:7158/',
-        scope: 'openid profile email offline_access'
+        scope: 'openid profile email'
       },
-      cacheLocation: 'localstorage',  // ← Muy importante para mantener sesión tras refresh
-      useRefreshTokens: true          // ← Permite renovar tokens silenciosamente
+      cacheLocation: 'localstorage'
     }),
   ],
   providers: [

@@ -1,31 +1,46 @@
-<div class="container mt-5">
-    <h3>Transacción Segura</h3>
+<div class="card shadow-sm p-4 text-center w-50 mx-auto mt-5">
+    <h5 class="mb-4">Opciones de autenticación</h5>
 
-    <!-- Paso 1: Enviar OTP -->
-    <button *ngIf="!challengeSent" class="btn btn-primary" (click)="requestTransferToken()">
-        Confirmar Transacción
+    <button *ngIf="!challengeSent" class="btn btn-primary w-100 mb-3 py-3" (click)="requestTransferToken()">
+        Contraseña de un solo uso por Google Authenticator
     </button>
 
-    <!-- Paso 2: Ingresar OTP
-    <div *ngIf="challengeSent" class="mt-3">
-        <label for="otp">Ingrese el código OTP</label>
-        <input type="text" id="otp" [(ngModel)]="otp" class="form-control" placeholder="123456">
-        <button class="btn btn-success mt-2" (click)="verifyOtp()">Validar y Ejecutar</button>
-    </div>-->
+    <button *ngIf="!challengeSent" class="btn btn-primary w-100 mb-3 py-3" data-bs-toggle="modal"
+        data-bs-target="#otpModal" (click)="enviarOtp()">
+        Enviar OTP por correo
+    </button>
 
-    <!-- Resultado
-    <div *ngIf="transactionResult" class="alert alert-success mt-3">
-        {{ transactionResult.message }}
-    </div>-->
-
-    <!-- Botón Logout -->
-    <button *ngIf="auth.isAuthenticated$ | async" (click)="logout()" class="btn btn-danger">
+    <button *ngIf="auth.isAuthenticated$ | async" class="btn btn-danger w-100 py-3" (click)="logout()">
         Cerrar sesión
     </button>
+</div>
 
-    <ng-container *ngIf="!(auth.isLoading$ | async)">
-        <ng-container *ngIf="auth.user$ | async as user">
-            <p>Bienvenido {{ user.nickname }}</p>
-        </ng-container>
-    </ng-container>
+
+<div class="modal fade" id="otpModal" tabindex="-1" aria-labelledby="otpModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content shadow-lg">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="otpModalLabel">Verificación por correo TKS</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <!-- Paso 1: Enviar OTP -->
+                <div *ngIf="!isSent">
+                    <label for="email">Correo electrónico:</label>
+                    <input type="email" id="email" [(ngModel)]="email" class="form-control" placeholder="tu@correo.com">
+                    <button (click)="sendOtp()" class="btn btn-primary w-100 mt-3">Enviar código OTP</button>
+                </div>
+
+                <!-- Paso 2: Verificar OTP -->
+                <div *ngIf="isSent" class="mt-3">
+                    <label for="otp">Ingrese el código OTP recibido:</label>
+                    <input type="text" id="otp" [(ngModel)]="otp" class="form-control" placeholder="123456">
+                    <button (click)="verifyOtp()" class="btn btn-success w-100 mt-3">Verificar OTP</button>
+                </div>
+
+                <p class="text-center mt-3">{{ message }}</p>
+            </div>
+        </div>
+    </div>
 </div>
