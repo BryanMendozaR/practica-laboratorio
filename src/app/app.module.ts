@@ -15,8 +15,8 @@ import {AuthenticacionModule} from './auth/auth.module';
     AppRoutingModule,
     AuthenticacionModule,
     AuthModule.forRoot({
-      domain: 'dev-eky1z83d5zy7xss7.us.auth0.com',
-      clientId: '5s9jdumlQe65D45ZVH7qMzTdJE9P39LW',
+      domain: 'dev-s4afwstsn13suhz7.us.auth0.com',
+      clientId: 'le95LQVUoxiZ2HEHGF8t6XJqrBw0LgDF',
       authorizationParams: {
         redirect_uri: window.location.origin,
         scope: 'openid profile email'
