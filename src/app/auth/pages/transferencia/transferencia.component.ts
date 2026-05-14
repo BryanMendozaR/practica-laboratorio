@@ -81,7 +81,7 @@ export class TransferenciaComponent implements OnInit {
       const token = await firstValueFrom(
         this.auth.getAccessTokenSilently({
           authorizationParams: {
-            audience: 'https://localhost:7158/',
+            audience: 'https://transfer-api',
             scope: 'transactions:transfer'
           }
         })
@@ -90,14 +90,14 @@ export class TransferenciaComponent implements OnInit {
       console.log('Token obtenido:', token);
 
       const headers = {Authorization: `Bearer ${token}`};
-      this.http.post('https://localhost:7158/transactions', {}, {headers})
+      this.http.post('https://transfer-api', {}, {headers})
         .subscribe(res => console.log(res));
 
     } catch (e: any) {
       console.warn('Se requiere MFA, redirigiendo...', e);
       await this.auth.loginWithRedirect({
         authorizationParams: {
-          audience: 'https://localhost:7158/',
+          audience: 'https://transfer-api',
           scope: 'openid profile email transactions:transfer'
         },
         appState: {target: '/transferencia'} // Ruta exacta
