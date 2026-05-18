@@ -13,3 +13,12 @@ button {
   border-radius: 6px;
   background: #f9f9f9;
 }
+
+.service-img {
+  width: 300px; /* tamaño fijo */
+  height: 200px; /* tamaño fijo */
+  object-fit: contain;
+  border-radius: 12px;
+  display: block;
+  margin: 0 auto;
+}

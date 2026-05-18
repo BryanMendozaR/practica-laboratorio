@@ -3,7 +3,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {AuthService} from '@auth0/auth0-angular';
 import emailjs from 'emailjs-com';
-import {combineLatest, firstValueFrom} from 'rxjs';
+import {firstValueFrom} from 'rxjs';
 
 @Component({
   selector: 'app-transferencia',
@@ -21,14 +21,30 @@ export class TransferenciaComponent implements OnInit {
 
   constructor(private http: HttpClient, public auth: AuthService, private router: Router) { }
 
-  ngOnInit() {
-    combineLatest([this.auth.isLoading$, this.auth.user$]).subscribe(
-      ([loading, user]) => {
-        if (!loading && user) {
-          console.log('Usuario en transferencia:', user);
-        }
-      }
-    );
+  async ngOnInit() {
+    /*  combineLatest([this.auth.isLoading$, this.auth.user$]).subscribe(
+       ([loading, user]) => {
+         if (!loading && user) {
+           console.log('Usuario en transferencia:', user);
+         }
+       }
+     ); */
+
+    const isAuth = await firstValueFrom(this.auth.isAuthenticated$);
+
+    if (isAuth) {
+      const token = await firstValueFrom(
+        this.auth.getAccessTokenSilently({
+          authorizationParams: {
+            audience: 'https://transfer-api',
+            scope: 'openid profile email transactions:transfer'
+          }
+        })
+      );
+
+      console.log("TOKEN PARA POSTMAN:", token);
+    }
+
   }
 
   sendOtp() {
@@ -107,6 +123,16 @@ export class TransferenciaComponent implements OnInit {
 
   enviarOtp() {
 
+  }
+
+  async solicitarTransferenciaConMFA() {
+    await this.auth.loginWithRedirect({
+      authorizationParams: {
+        audience: "https://transfer-api",
+        scope: "openid profile email transactions:transfer"
+      },
+      appState: {target: "/transferencia"}
+    });
   }
 
   logout() {

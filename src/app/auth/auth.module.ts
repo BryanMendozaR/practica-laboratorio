@@ -7,12 +7,18 @@ import {AuthRoutingModule} from './auth-routing.module';
 import {InicioSesionPageComponent} from './pages/inicio-sesion-page/inicio-sesion-page.component';
 import {TransferenciaComponent} from './pages/transferencia/transferencia.component';
 import { OtpComponent } from './pages/otp/otp.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { PerfilComponent } from './pages/perfil/perfil.component';
+import { TransferComponent } from './pages/transfer/transfer.component';
 
 @NgModule({
   declarations: [
     InicioSesionPageComponent,
     TransferenciaComponent,
-    OtpComponent
+    OtpComponent,
+    DashboardComponent,
+    PerfilComponent,
+    TransferComponent
   ],
   imports: [
     CommonModule,

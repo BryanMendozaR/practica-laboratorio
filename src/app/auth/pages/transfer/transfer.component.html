@@ -1,0 +1,62 @@
+<div class="container mt-5">
+
+    <div class="card shadow p-4 mx-auto" style="max-width: 600px; border-radius: 15px;">
+
+        <h3 class="fw-bold text-center mb-4">Realizar Transferencia</h3>
+
+        <!-- FORMULARIO -->
+        <div *ngIf="!transferConfirmed">
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Correo destinatario</label>
+                <input [(ngModel)]="receiverEmail" type="email" class="form-control" placeholder="correo@ejemplo.com">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Monto</label>
+                <input [(ngModel)]="amount" type="number" class="form-control" placeholder="100">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">Descripción</label>
+                <textarea [(ngModel)]="description" class="form-control" rows="3"
+                    placeholder="Pago de laboratorio..."></textarea>
+            </div>
+
+            <div class="alert alert-info text-center">
+                <strong>Nota:</strong> Para confirmar esta transferencia se requerirá verificación MFA con Auth0.
+            </div>
+
+            <button class="btn btn-success w-100 py-2" (click)="confirmTransfer()">
+                Confirmar Transferencia (MFA Auth0)
+            </button>
+
+            <!-- BOTÓN REGRESAR -->
+            <button class="btn btn-outline-dark w-100 py-2 mt-3" (click)="goDashboard()">
+                <i class="bi bi-arrow-left"></i> Volver al Dashboard
+            </button>
+
+        </div>
+
+        <!-- RESULTADO -->
+        <div *ngIf="transferConfirmed" class="text-center mt-4">
+            <h4 class="text-success fw-bold">Transferencia Exitosa</h4>
+
+            <p><strong>ID:</strong> {{ transferResult?.id }}</p>
+            <p><strong>Estado:</strong> {{ transferResult?.status }}</p>
+            <p><strong>Monto:</strong> {{ transferResult?.amount }}</p>
+            <p><strong>Destinatario:</strong> {{ transferResult?.receiverEmail }}</p>
+
+            <button class="btn btn-dark w-100 mt-3" (click)="goDashboard()">
+                Volver al Dashboard
+            </button>
+        </div>
+
+        <!-- MENSAJE ERROR -->
+        <p class="text-center mt-3 text-danger fw-bold" *ngIf="message">
+            {{ message }}
+        </p>
+
+    </div>
+
+</div>

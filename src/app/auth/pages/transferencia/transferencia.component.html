@@ -10,6 +10,10 @@
         Enviar OTP por correo
     </button>
 
+    <!--<button class="btn btn-primary w-100 mb-3 py-3" (click)="solicitarTransferenciaConMFA()">
+        Enviar OTP por correo
+    </button>-->
+
     <button *ngIf="auth.isAuthenticated$ | async" class="btn btn-danger w-100 py-3" (click)="logout()">
         Cerrar sesión
     </button>

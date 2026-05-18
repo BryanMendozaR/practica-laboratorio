@@ -1,12 +1,11 @@
 <div class="container">
     <!-- OKTA -->
-    <!-- Hero Section -->
     <div *ngIf="!(auth.isAuthenticated$ | async)">
         <section class="hero">
             <div class="container">
                 <h1>Bienvenido a <span class="text-primary">TKS</span></h1>
                 <p class="lead">Expertos en pruebas de laboratorio con seguridad digital</p>
-                <button (click)="login()" class="btn btn-lg btn-primary mt-3">Iniciar Sesión con Okta</button>
+                <button (click)="login()" class="btn btn-lg btn-primary mt-3">Demo Iniciar Sesión con Auth0</button>
             </div>
         </section>
 
@@ -14,19 +13,24 @@
         <section class="services py-5">
             <div class="container text-center">
                 <h2 class="mb-4">Nuestros Servicios</h2>
-                <div class="row g-4">
-                    <div class="col-md-4">
-                        <i class="bi bi-shield-lock"></i>
+
+                <div class="row g-4 justify-content-center">
+                    <div class="col-md-3">
+                        <img src="assets/images/seguridad_garantizada.png" class="service-img mb-3"
+                            alt="Seguridad Garantizada">
                         <h5 class="mt-3">Seguridad Garantizada</h5>
-                        <p>Protegemos los datos sensibles de cada paciente utilizando Okta como gestor de identidad.</p>
+                        <p>Protegemos los datos sensibles de cada cliente utilizando Auth0 como gestor de identidad.</p>
                     </div>
-                    <div class="col-md-4">
-                        <i class="bi bi-clipboard-data"></i>
+
+                    <div class="col-md-3">
+                        <img src="assets/images/pruebas_precision.png" class="service-img mb-3"
+                            alt="Pruebas de Precisión">
                         <h5 class="mt-3">Pruebas de Precisión</h5>
                         <p>Resultados confiables y auditables bajo altos estándares de calidad.</p>
                     </div>
-                    <div class="col-md-4">
-                        <i class="bi bi-cloud-check"></i>
+
+                    <div class="col-md-3">
+                        <img src="assets/images/acceso_seguro.png" class="service-img mb-3" alt="Acceso Seguro">
                         <h5 class="mt-3">Acceso Seguro</h5>
                         <p>Accede a tus resultados en línea con autenticación segura.</p>
                     </div>

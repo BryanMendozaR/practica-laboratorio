@@ -1,0 +1,83 @@
+<div class="container mt-5">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">Panel Principal</h2>
+
+        <button class="btn btn-outline-danger" (click)="logout()">
+            <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+        </button>
+    </div>
+
+    <!-- User Info -->
+    <div *ngIf="auth.user$ | async as user" class="card shadow-sm p-4 mb-4 dashboard-card">
+
+        <div class="row align-items-center">
+            <div class="col-md-2 text-center">
+                <img [src]="user.picture" class="rounded-circle img-profile" alt="user" />
+            </div>
+
+            <div class="col-md-10">
+                <h4 class="mb-1">Bienvenido, {{ user.name || user.nickname }}</h4>
+                <p class="mb-1 text-muted">
+                    <strong>Email:</strong> {{ user.email }}
+                </p>
+                <p class="mb-0 text-muted">
+                    <strong>Auth0 ID:</strong> {{ user.sub }}
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Actions -->
+    <div class="row g-4">
+
+        <!-- Perfil -->
+        <div class="col-md-4">
+            <div class="card shadow-sm action-card h-100 p-4 text-center">
+                <i class="bi bi-person-circle icon-dashboard"></i>
+                <h5 class="fw-bold mt-3">Mi Perfil</h5>
+                <p class="text-muted">
+                    Visualiza tu información y revisa los claims del token.
+                </p>
+
+                <button class="btn btn-primary w-100" (click)="goToProfile()">
+                    Ir a Perfil
+                </button>
+            </div>
+        </div>
+
+        <!-- Transferencias -->
+        <div class="col-md-4">
+            <div class="card shadow-sm action-card h-100 p-4 text-center">
+                <i class="bi bi-cash-coin icon-dashboard"></i>
+                <h5 class="fw-bold mt-3">Realizar Transferencia</h5>
+                <p class="text-muted">
+                    Ejecuta una transferencia segura usando MFA con Auth0.
+                </p>
+
+                <button class="btn btn-success w-100" (click)="goToTransfer()">
+                    Transferir
+                </button>
+            </div>
+        </div>
+
+        <!-- Historial -->
+        <div class="col-md-4">
+            <div class="card shadow-sm action-card h-100 p-4 text-center">
+                <i class="bi bi-clock-history icon-dashboard"></i>
+                <h5 class="fw-bold mt-3">Historial</h5>
+                <p class="text-muted">
+                    Consulta tus transferencias registradas en el sistema.
+                </p>
+
+                <button class="btn btn-dark w-100" (click)="goToHistory()">
+                    Ver Historial
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
