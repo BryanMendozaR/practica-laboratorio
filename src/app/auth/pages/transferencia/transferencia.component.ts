@@ -1,9 +1,7 @@
-import {HttpClient} from '@angular/common/http';
 import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
 import {AuthService} from '@auth0/auth0-angular';
+import {AuthTokenService} from '../../../services/auth-token.service';
 import emailjs from 'emailjs-com';
-import {combineLatest, firstValueFrom} from 'rxjs';
 
 @Component({
   selector: 'app-transferencia',
@@ -13,22 +11,21 @@ import {combineLatest, firstValueFrom} from 'rxjs';
 export class TransferenciaComponent implements OnInit {
   otp = '';
   challengeSent = false;
-  transactionResult: any;
   email = 'brianalfredomr@gmail.com';
   generatedOtp = '';
   message = '';
   isSent = false;
 
-  constructor(private http: HttpClient, public auth: AuthService, private router: Router) { }
+  constructor(
+    public auth: AuthService,
+    private authToken: AuthTokenService
+  ) { }
 
-  ngOnInit() {
-    combineLatest([this.auth.isLoading$, this.auth.user$]).subscribe(
-      ([loading, user]) => {
-        if (!loading && user) {
-          console.log('Usuario en transferencia:', user);
-        }
-      }
-    );
+  async ngOnInit() {
+    if (await this.authToken.isAuthenticated()) {
+      const token = await this.authToken.getToken('https://transfer-api', 'openid profile email transactions:transfer');
+      console.log("TOKEN PARA POSTMAN:", token);
+    }
   }
 
   sendOtp() {
@@ -75,41 +72,31 @@ export class TransferenciaComponent implements OnInit {
     }
   }
 
-
   async requestTransferToken(): Promise<void> {
     try {
-      const token = await firstValueFrom(
-        this.auth.getAccessTokenSilently({
-          authorizationParams: {
-            audience: 'https://transfer-api',
-            scope: 'transactions:transfer'
-          }
-        })
-      );
-
+      const token = await this.authToken.getToken('https://transfer-api', 'transactions:transfer');
       console.log('Token obtenido:', token);
-
-      const headers = {Authorization: `Bearer ${token}`};
-      this.http.post('https://transfer-api', {}, {headers})
-        .subscribe(res => console.log(res));
-
-    } catch (e: any) {
-      console.warn('Se requiere MFA, redirigiendo...', e);
-      await this.auth.loginWithRedirect({
-        authorizationParams: {
-          audience: 'https://transfer-api',
-          scope: 'openid profile email transactions:transfer'
-        },
-        appState: {target: '/transferencia'} // Ruta exacta
+    } catch {
+      console.warn('Se requiere MFA, redirigiendo...');
+      this.authToken.loginWithRedirect({
+        audience: 'https://transfer-api',
+        scope: 'openid profile email transactions:transfer',
+        appState: {target: '/transferencia'}
       });
     }
   }
 
-  enviarOtp() {
+  enviarOtp() { }
 
+  async solicitarTransferenciaConMFA() {
+    this.authToken.loginWithRedirect({
+      audience: 'https://transfer-api',
+      scope: 'openid profile email transactions:transfer',
+      appState: {target: '/transferencia'}
+    });
   }
 
   logout() {
-    this.auth.logout({logoutParams: {returnTo: window.location.origin}});
+    this.authToken.logout();
   }
 }

@@ -2,6 +2,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {AuthService} from '@auth0/auth0-angular';
+import {AuthTokenService} from '../../../services/auth-token.service';
 
 @Component({
   selector: 'app-inicio-sesion-page',
@@ -9,34 +10,30 @@ import {AuthService} from '@auth0/auth0-angular';
   styleUrl: './inicio-sesion-page.component.scss'
 })
 export class InicioSesionPageComponent implements OnInit {
-  accessToken?: string;
 
-  constructor(public auth: AuthService, private router: Router) { }
+  constructor(
+    public auth: AuthService,
+    private authToken: AuthTokenService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
-    this.auth.user$.subscribe(user => {
-      console.log('Usuario logueado:', user);
-      if (user !== null) {
-        this.router.navigate(['/autenticacion/transferencia']);
+    this.auth.handleRedirectCallback().subscribe({
+      next: (result) => {
+        const target = result?.appState?.target || '/autenticacion/dashboard';
+        this.router.navigateByUrl(target);
+      },
+      error: () => {
+        //this.router.navigateByUrl('/autenticacion/dashboard');
       }
     });
-
-    /* this.auth.idTokenClaims$.subscribe(c => console.log('ID Token:', c));
-    this.auth.getAccessTokenSilently().subscribe(token => {
-      console.log('Access Token:', token);
-      this.accessToken = token;
-    }); */
-
   }
 
   login() {
-    this.auth.loginWithRedirect();
+    this.authToken.loginWithRedirect({
+      appState: {
+        target: '/autenticacion/dashboard'
+      }
+    });
   }
-
-  /*  getToken() {
-     this.auth.getAccessTokenSilently().subscribe(token => {
-       this.accessToken = token;
-       console.log('Access Token:', token);
-     });
-   } */
 }

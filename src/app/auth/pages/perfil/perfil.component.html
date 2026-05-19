@@ -1,0 +1,61 @@
+<div class="container mt-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">Mi Perfil</h2>
+        <button class="btn btn-outline-primary" routerLink="/autenticacion/dashboard">
+            <i class="bi bi-arrow-left"></i> Volver
+        </button>
+    </div>
+
+    <!-- Usuario -->
+    <div *ngIf="auth.user$ | async as user" class="card shadow-sm p-4 mb-4 profile-card">
+
+        <div class="row align-items-center">
+            <div class="col-md-2 text-center">
+                <img [src]="user.picture" class="rounded-circle img-profile" alt="user">
+            </div>
+
+            <div class="col-md-10">
+                <h4 class="mb-1">{{ user.name || user.nickname }}</h4>
+                <p class="mb-1 text-muted"><strong>Email:</strong> {{ user.email }}</p>
+                <p class="mb-0 text-muted"><strong>Auth0 ID:</strong> {{ user.sub }}</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Informacion -->
+    <div class="card shadow-sm p-4">
+        <h5 class="fw-bold mb-3">Informacion Inicio Sesión</h5>
+        <pre class="claims-box">{{ users | json }}</pre>
+    </div>
+
+    <!-- Token -->
+    <div class="card shadow-sm p-4 mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold mb-0">Access Token</h5>
+
+            <div class="d-flex gap-2">
+                <button class="btn btn-sm btn-secondary" (click)="loadToken()">
+                    <i class="bi bi-arrow-clockwise"></i> Refrescar
+                </button>
+
+                <button class="btn btn-sm btn-success" (click)="copyToken()">
+                    <i class="bi bi-clipboard"></i> Copiar
+                </button>
+            </div>
+        </div>
+
+        <textarea class="form-control token-area" rows="5" readonly>{{ accessToken }}</textarea>
+
+        <p class="text-success mt-2" *ngIf="message">{{ message }}</p>
+    </div>
+
+    <!-- Claims -->
+    <div class="card shadow-sm p-4">
+        <h5 class="fw-bold mb-3">Claims Decodificados</h5>
+
+        <pre class="claims-box">{{ decodedToken | json }}</pre>
+    </div>
+
+</div>
