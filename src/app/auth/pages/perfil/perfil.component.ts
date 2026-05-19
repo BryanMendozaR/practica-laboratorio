@@ -1,54 +1,49 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AuthService} from '@auth0/auth0-angular';
-import {firstValueFrom} from 'rxjs';
+import {Subject, takeUntil} from 'rxjs';
+import {AuthTokenService} from '../../../services/auth-token.service';
 
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.component.html',
   styleUrl: './perfil.component.scss'
 })
-export class PerfilComponent implements OnInit {
+export class PerfilComponent implements OnInit, OnDestroy {
   accessToken: string = '';
   decodedToken: any = null;
   message: string = '';
+  users: any = null;
+  private destroy$ = new Subject<void>();
 
-  constructor(public auth: AuthService) { }
+  constructor(
+    public auth: AuthService,
+    private authToken: AuthTokenService
+  ) { }
 
   async ngOnInit(): Promise<void> {
-    const isAuth = await firstValueFrom(this.auth.isAuthenticated$);
-
-    if (isAuth) {
+    if (await this.authToken.isAuthenticated()) {
       await this.loadToken();
     }
+
+    this.auth.user$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(user => {
+        this.users = user;
+      });
   }
 
   async loadToken() {
     try {
-      this.accessToken = await firstValueFrom(
-        this.auth.getAccessTokenSilently({
-          authorizationParams: {
-            audience: 'https://transfer-api',
-            scope: 'openid profile email'
-          }
-        })
-      );
-
-      this.decodedToken = this.decodeJwt(this.accessToken);
-
+      this.accessToken = await this.authToken.getToken();
+      this.decodedToken = this.authToken.decodeJwt(this.accessToken);
     } catch (err) {
       console.error(err);
       this.message = 'No se pudo obtener el token';
     }
   }
-
-  decodeJwt(token: string): any {
-    try {
-      const payload = token.split('.')[1];
-      const decoded = atob(payload.replace(/-/g, '+').replace(/_/g, '/'));
-      return JSON.parse(decoded);
-    } catch (e) {
-      return null;
-    }
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   copyToken() {

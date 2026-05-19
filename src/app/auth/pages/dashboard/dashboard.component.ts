@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {Router} from '@angular/router';
 import {AuthService} from '@auth0/auth0-angular';
+import {AuthTokenService} from '../../../services/auth-token.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,6 +12,7 @@ export class DashboardComponent {
 
   constructor(
     public auth: AuthService,
+    private authToken: AuthTokenService,
     private router: Router
   ) { }
 
@@ -27,7 +29,6 @@ export class DashboardComponent {
   }
 
   logout() {
-    this.auth.logout({logoutParams: {returnTo: window.location.origin}});
+    this.authToken.logout();
   }
-
 }

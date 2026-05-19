@@ -2,7 +2,7 @@
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold">Mi Perfil</h2>
-        <button class="btn btn-outline-primary" routerLink="/dashboard">
+        <button class="btn btn-outline-primary" routerLink="/autenticacion/dashboard">
             <i class="bi bi-arrow-left"></i> Volver
         </button>
     </div>
@@ -22,6 +22,12 @@
             </div>
         </div>
 
+    </div>
+
+    <!-- Informacion -->
+    <div class="card shadow-sm p-4">
+        <h5 class="fw-bold mb-3">Informacion Inicio Sesión</h5>
+        <pre class="claims-box">{{ users | json }}</pre>
     </div>
 
     <!-- Token -->
