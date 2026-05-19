@@ -23,7 +23,7 @@ export class DashboardComponent {
   }
 
   goToHistory() {
-    this.router.navigate(['/autenticacion/transferencias']);
+    this.router.navigate(['/autenticacion/historial']);
   }
 
   logout() {

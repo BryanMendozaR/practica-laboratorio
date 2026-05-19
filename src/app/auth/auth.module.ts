@@ -9,6 +9,7 @@ import {TransferenciaComponent} from './pages/transferencia/transferencia.compon
 import { OtpComponent } from './pages/otp/otp.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { PerfilComponent } from './pages/perfil/perfil.component';
+import { HistoryComponent } from './pages/history/history.component';
 import { TransferComponent } from './pages/transfer/transfer.component';
 
 @NgModule({
@@ -17,6 +18,7 @@ import { TransferComponent } from './pages/transfer/transfer.component';
     TransferenciaComponent,
     OtpComponent,
     DashboardComponent,
+    HistoryComponent,
     PerfilComponent,
     TransferComponent
   ],
